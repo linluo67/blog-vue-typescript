@@ -23,6 +23,14 @@ export default defineConfig({
       ]
     })
   ],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    include: ['src/**/*.test.{ts,tsx}'],
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
 
   /**
    * 在生产中服务时的基本公共路径。
