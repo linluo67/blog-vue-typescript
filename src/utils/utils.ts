@@ -37,7 +37,6 @@ export function setCookie(cName: string, value: any, expiredays: any) {
       cName +
       "=" +
       escape(value) +
-      // (expiredays == null ? '' : ';expires=' + exdate.toGMTString());
       (expiredays == null ? "" : ";expires=" + exdate.toUTCString());
   }
   if (expiredays === "100") {
@@ -46,8 +45,16 @@ export function setCookie(cName: string, value: any, expiredays: any) {
       cName +
       "=" +
       escape(value) +
-      // (expiredays == null ? '' : ';expires=' + exdate.toGMTString());
       (expiredays == null ? "" : ";expires=" + exdate.toUTCString());
+  }
+  if (expiredays < 0) {
+    let exdate = new Date();
+    exdate.setTime(exdate.getTime() - 1);
+    document.cookie =
+      cName +
+      "=" +
+      escape(value) +
+      ";expires=" + exdate.toUTCString();
   }
 }
 export function getCookie(cName: string) {
