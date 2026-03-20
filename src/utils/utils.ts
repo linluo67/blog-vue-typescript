@@ -30,24 +30,29 @@ export function throttle(fn: Function, delay: number) {
 }
 
 export function setCookie(cName: string, value: any, expiredays: any) {
+  let exdate = new Date();
   if (expiredays > 0 && expiredays !== "100") {
-    let exdate = new Date();
     exdate.setDate(exdate.getDate() + expiredays);
     document.cookie =
       cName +
       "=" +
       escape(value) +
-      // (expiredays == null ? '' : ';expires=' + exdate.toGMTString());
       (expiredays == null ? "" : ";expires=" + exdate.toUTCString());
-  }
-  if (expiredays === "100") {
-    let exdate = new Date("2118-01-01 00:00:00");
+  } else if (expiredays === "100") {
+    exdate = new Date("2118-01-01 00:00:00");
     document.cookie =
       cName +
       "=" +
       escape(value) +
-      // (expiredays == null ? '' : ';expires=' + exdate.toGMTString());
       (expiredays == null ? "" : ";expires=" + exdate.toUTCString());
+  } else {
+    // 处理过期时间 <= 0 的情况（用于清除 cookie）
+    exdate.setDate(exdate.getDate() - 1);
+    document.cookie =
+      cName +
+      "=" +
+      escape(value) +
+      ";expires=" + exdate.toUTCString();
   }
 }
 export function getCookie(cName: string) {
